@@ -15,6 +15,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -241,13 +242,17 @@ public class AddToDoActivity extends AppCompatActivity implements  com.android.d
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
                 int minute = calendar.get(Calendar.MINUTE);
 
+                boolean is24Hour = DateFormat.is24HourFormat(getApplicationContext());
                 if(Build.VERSION.SDK_INT<Build.VERSION_CODES.LOLLIPOP){
-                    com.android.datetimepicker.time.TimePickerDialog timePickerDialog = com.android.datetimepicker.time.TimePickerDialog.newInstance(AddToDoActivity.this, hour, minute, false);
+                    com.android.datetimepicker.time.TimePickerDialog timePickerDialog =
+                            com.android.datetimepicker.time.TimePickerDialog
+                                    .newInstance(AddToDoActivity.this, hour, minute, is24Hour);
                     timePickerDialog.show(getFragmentManager(), "TimeFragment");
 
                 }
                 else {
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(AddToDoActivity.this, R.style.CustomDialog, AddToDoActivity.this, hour, minute, false);
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(AddToDoActivity.this,
+                            R.style.CustomDialog, AddToDoActivity.this, hour, minute, is24Hour);
                     timePickerDialog.show();
                 }
             }
@@ -306,10 +311,8 @@ public class AddToDoActivity extends AppCompatActivity implements  com.android.d
         if(mUserReminderDate!=null){
             mReminderTextView.setVisibility(View.VISIBLE);
             Date date = mUserReminderDate;
-            String dateString = formatDate("d MMM, yyyy", date);
-            String timeString = formatDate("h:mm", date);
-            String amPmString = formatDate("a", date);
-            String finalString = String.format(getResources().getString(R.string.remind_date_and_time), dateString, timeString, amPmString);
+            String dateString = formatDate(date);
+            String finalString = String.format(getResources().getString(R.string.remind_date_and_time), dateString);
             mReminderTextView.setText(finalString);
         }
         else{
@@ -370,9 +373,10 @@ public class AddToDoActivity extends AppCompatActivity implements  com.android.d
         }
     }
 
-    public static String formatDate(String formatString, Date dateToFormat){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatString);
-        return simpleDateFormat.format(dateToFormat);
+    public static String formatDate(Date dateToFormat){
+        java.text.DateFormat dateFormat = SimpleDateFormat
+                .getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.SHORT);
+        return dateFormat.format(dateToFormat);
     }
 
 

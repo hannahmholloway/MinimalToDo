@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_ID_TODO_ITEM = 100;
     private ToDoItem mJustDeletedToDoItem;
     private int mIndexOfDeletedToDoItem;
-    public static final String DATE_TIME_FORMAT = "MMM d, yyyy  h:mm a";
+    //public static final String DATE_TIME_FORMAT = "MMM d, yyyy  h:mm a";
     public static final String FILENAME = "todoitems.json";
     private StoreRetrieveData storeRetrieveData;
     public ItemTouchHelper itemTouchHelper;
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
 //            TextDrawable myDrawable = TextDrawable.builder().buildRound(item.getToDoText().substring(0,1),holder.color);
             holder.mColorImageView.setImageDrawable(myDrawable);
             if(item.getToDoDate()!=null){
-                holder.mTimeTextView.setText(AddToDoActivity.formatDate(MainActivity.DATE_TIME_FORMAT, item.getToDoDate()));
+                holder.mTimeTextView.setText(AddToDoActivity.formatDate(item.getToDoDate()));
             }
 
 
